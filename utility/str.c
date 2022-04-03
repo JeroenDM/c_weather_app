@@ -1,10 +1,10 @@
-#include "str_lib.h"
-
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <stdarg.h>
+
+#include "str.h"
 
 struct String str_new(char content[])
 {

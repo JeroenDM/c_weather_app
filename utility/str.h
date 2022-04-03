@@ -1,5 +1,5 @@
-#ifndef _STR_LIB_H_
-#define _STR_LIB_H_
+#ifndef _UTILITY_STR_LIB_H_
+#define _UTILITY_STR_LIB_H_
 
 #include <stdio.h>
 #include <assert.h>
@@ -19,4 +19,4 @@ void str_delete(struct String* s);
 
 struct String str_format(char fmt[], ...);
 
-#endif
+#endif // _UTILITY_STR_LIB_H_

@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "main/graph.h"
+
 const int WIDTH = 400;
 const int HEIGHT = 200;
 
@@ -17,73 +19,9 @@ Window root, win;
 XEvent evt;
 GC gc;
 
-typedef struct VecTag {
-    double* data;
-    size_t len;
-    size_t cap;
-} Vec;
-
-Vec vec_new(size_t max_size)
+void x11_draw_line(int x1, int y1, int x2, int y2)
 {
-    Vec v;
-    v.len = 0;
-    v.cap = max_size;
-    v.data = (double*) malloc(sizeof(double*) * max_size);
-    return v;
-}
-
-void vec_free(Vec* v)
-{
-    v->len = 0;
-    free(v->data);
-}
-
-struct Line {
-    Vec x_pts;
-    Vec y_pts;
-};
-
-struct Line line_new()
-{
-    const size_t num_pts = 6;
-    double x[] = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0};
-    double y[] = {0.2, 0.8, 0.5, 0.4, 0.8, 1.0};
-    struct Line l;
-    l.x_pts = vec_new(num_pts);
-    l.y_pts = vec_new(num_pts);
-    l.x_pts.len = num_pts;
-    l.y_pts.len = num_pts;
-    memcpy(l.x_pts.data, x, l.x_pts.len * sizeof(double));
-    memcpy(l.y_pts.data, y, l.y_pts.len * sizeof(double));
-    return l;
-}
-
-void line_draw(struct Line l) {
-
-    const size_t num_pts = l.x_pts.len;
-    assert(num_pts == l.y_pts.len);
-    const double x_scale = WIDTH;
-    const double y_scale = HEIGHT;
-
-    double* x = l.x_pts.data;
-    double* y = l.y_pts.data;
-
-    for (size_t i=1; i < num_pts; ++i) {
-        printf("%.2f %.2f\n", *x, *y);
-
-        XDrawLine(dpy, win, gc,
-            (int) (*x * x_scale),
-            (int) ((1.0 - *y) * y_scale),
-            (int) (*x++ * x_scale),
-            (int) ((1.0 - *y++) * y_scale)
-        );
-    }
-}
-
-void line_free(struct Line* l)
-{
-    vec_free(&(l->x_pts));
-    vec_free(&(l->y_pts));
+	XDrawLine(dpy, win, gc, x1, y1, x2, y2);
 }
 
 int main(int argc, char *argv[])
@@ -138,7 +76,7 @@ int main(int argc, char *argv[])
 
 	XMapRaised(dpy, win);
 
-    struct Line graph_line = line_new();
+	struct Graph g = graph_new(WIDTH, HEIGHT);
 
 	while (loop)
 	{
@@ -163,7 +101,8 @@ int main(int argc, char *argv[])
 							str, strlen(str));
 					XFlush(dpy);
 
-                    line_draw(graph_line);
+                    // line_draw(graph_line);
+					draw_graph(g, x11_draw_line);
 					break;
 				case ButtonPress:
 					printf("ButtonPress\n");
@@ -180,7 +119,7 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-    line_free(&graph_line);
+    graph_free(&g);
 	XFreeFontSet(dpy, font);
 	XDestroyWindow(dpy, win);
 	XCloseDisplay(dpy);
