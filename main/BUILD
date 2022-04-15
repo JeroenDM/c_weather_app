@@ -18,10 +18,24 @@ cc_library(
     include_prefix = "main",
 )
 
+cc_library(
+    name = "layout",
+    srcs = ["layout.c"],
+    hdrs = ["layout.h"],
+    copts = C_FLAGS,
+)
+
+cc_test(
+    name = "test_layout",
+    deps = [":layout"],
+    srcs = ["test_layout.c"],
+    data = ["layout.txt"],
+)
+
 cc_binary(
-    name = "gui",
+    name = "main",
     srcs = ["gui.c"],
-    deps = ["graph", "@X11//:lib"],
+    deps = [":graph", "@X11//:lib"],
     copts = C_FLAGS,
 )
 
@@ -31,6 +45,6 @@ cc_test(
         "term_drawing.h",
         "test_graph.c",
     ],
-    deps = ["graph"],
+    deps = [":graph"],
     copts = C_FLAGS,
 )

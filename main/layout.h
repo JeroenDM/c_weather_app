@@ -11,7 +11,7 @@ enum WidgetType {
 };
 
 static const size_t widget_type_max_int = (size_t)PLOT;
-static const char const *widget_type_desc[] = { "text_input", "label", "plot" };
+static const char* widget_type_desc[] = { "text_input", "label", "plot" };
 static const size_t widget_type_desc_len[] = { 10, 5, 4 };
 
 struct Color {

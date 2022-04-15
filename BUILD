@@ -26,18 +26,3 @@ cc_binary(
     srcs = ["maybe.c"],
     copts = C_FLAGS,
 )
-
-cc_library(
-    name = "layout",
-    srcs = ["layout.c"],
-    hdrs = ["layout.h"],
-    data = ["layout.txt"],
-    copts = C_FLAGS,
-)
-
-cc_test(
-    name = "test_layout",
-    deps = ["layout"],
-    srcs = ["test_layout.c"],
-    data = ["layout.txt"],
-)

@@ -30,3 +30,9 @@ cc_library(
     visibility = ["//main:__pkg__"],
     include_prefix = "utility",
 )
+
+cc_test(
+    name="test_str_lib",
+    srcs=["test_str_lib.c"],
+    deps=[":utility"],
+)
